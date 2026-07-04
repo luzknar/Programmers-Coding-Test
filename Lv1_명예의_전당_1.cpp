@@ -43,3 +43,30 @@ vector<int> solution(int k, vector<int> score) {
     
     return answer;
 }
+
+
+// 2차 시도 (Refactoring): 다른 사람의 풀이를 참고한 최적화 버전
+
+/*
+   - 배운 점: 
+     1. 정원을 초과할 때 굳이 루프를 쪼갤 필요 없이, 'greater<int>()' 내림차순 정렬을 활용하면 꼴찌가 항상 맨 뒤(back)에 위치하게 된다.
+     2. 'hallOfFame.size() > k'일 때 'pop_back()'으로 맨 뒤를 잘라내면 인원 제한과 예외 처리가 단 한 번에 해결됨
+*/
+
+vector<int> solution_optimized(int k, vector<int> score) {
+    vector<int> answer;
+    vector<int> hallOfFame;
+    
+    for (int i = 0; i < score.size(); i++) {
+        hallOfFame.push_back(score[i]);
+        sort(hallOfFame.begin(), hallOfFame.end(), greater<int>());
+        
+        if (hallOfFame.size() > k) {
+            hallOfFame.pop_back();
+        }
+        answer.push_back(hallOfFame.back());
+    }
+    return answer;
+}
+
+
