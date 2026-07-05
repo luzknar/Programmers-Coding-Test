@@ -40,3 +40,43 @@ int solution(vector<string> spell, vector<string> dic) {
     
     return answer;
 }
+
+
+
+/*
+   - 문제: 프로그래머스 Lv.1 외계어 사전 - 2차 최적화 버전 
+   - 날짜: 2026-07-05
+   - 배운 점:
+     1. [C++ 내장 함수 활용]: 수동으로 3중 for문을 돌리던 구조에서 `string.find()` 함수를 활용하여 2중 for문으로 압축함.
+     2. [Range-based for loop]: `const auto& i : dic` 문법을 사용하여 인덱스 범위 초과(Runtime Error) 예외를 구조적으로 방어함.
+     3. [메모리 최적화]: 참조자(&)를 붙여 복사본 생성으로 인한 메모리 낭비를 막고, 읽기 전용(const)으로 안전하게 데이터를 탐색함.
+     4. [자동 타입 추론]: `auto` 키워드를 사용하여 데이터 타입을 컴파일러가 알아서 추론하게 만들어 코드 가독성을 높임. 
+*/
+
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(vector<string> spell, vector<string> dic) {
+    int answer = 2;
+    bool flag = true; // 1 대신 직관적인 bool 타입 true 사용
+    
+    for (const auto& i : dic) {
+        flag = true; // 매 단어 검사 시작 시 깃허브(Flag) 초기화
+        
+        for (const auto& t : spell) {
+            // 단어 i 안에 알파벳 t가 포함되어 있지 않다면
+            if (i.find(t) == string::npos) {
+                flag = false; // 깃발 내림
+                break;        // 이미 탈락이므로 남은 알파벳 검사는 중단 
+            }
+        }
+        
+        if (flag == true) {
+            return 1;  
+        }
+    }
+    
+    return answer;
+}
